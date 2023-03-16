@@ -1,0 +1,2 @@
+C:\Qt\5.12.12\msvc2017\bin\windeployqt.exe --release --qmldir=E:\Users\SHST\code\capture\qt-project\gel E:\Users\SHST\code\capture\qt-project\build\gel-Desktop_Qt_5_12_12_MSVC2017_32bit-Release\release\SHSTCaptureGelN.exe
+C:\Qt\5.12.12\msvc2017_64\bin\windeployqt.exe --release --qmldir=E:\Users\SHST\code\capture\qt-project\gel E:\Users\SHST\code\capture\qt-project\build\gel-Desktop_Qt_5_12_12_MSVC2017_64bit-Release\release\SHSTCaptureGelN.exe

@@ -1,0 +1,1 @@
+C:\Qt\Qt5.12.8\5.12.8\mingw73_32\bin\windeployqt.exe --debug --qmldir=Z:\Code\_project\chemi\qt-project\gel Z:\Code\_project\chemi\qt-project\build-gel-Desktop_Qt_5_12_8_MinGW_32_bit-Debug\debug\SHSTCaptureGel.exe

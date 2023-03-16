@@ -1,0 +1,1 @@
+/Users/pipiluu/qt/5.12.11/clang_64/bin/lupdate /Users/pipiluu/Code/_project/chemi/qt-project/gel/gel.pro -ts /Users/pipiluu/Code/_project/chemi/qt-project/gel/qml/translations/i18n_en.ts

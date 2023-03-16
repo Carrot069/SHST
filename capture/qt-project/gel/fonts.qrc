@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/font">
+        <file alias="digital-dismay.regular.otf">../../font/digital-dismay.regular.otf</file>
+        <file alias="SourceHanSansSC-Medium.otf">../../font/SourceHanSansSC-Medium.otf</file>
+    </qresource>
+</RCC>
