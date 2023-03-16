@@ -1,0 +1,4 @@
+#!/bin/bash
+rm /Users/pipiluu/Code/_project/chemi/qt-project/build-chemi-sever-Desktop_Qt_5_15_0_clang_64bit-Release/SHSTCaptureServer.dmg
+/Users/pipiluu/Qt/5.15.0/clang_64/bin/macdeployqt /Users/pipiluu/Code/_project/chemi/qt-project/build-chemi-server-Desktop_Qt_5_15_0_clang_64bit-Release/SHSTCaptureServer.app -dmg -qmldir=/Users/pipiluu/Code/_project/chemi/qt-project/chemi-server
+/Users/pipiluu/Qt/5.15.0/clang_64/bin/macdeployqt /Users/pipiluu/Code/_project/chemi/qt-project/build-chemi-server-Desktop_Qt_5_15_0_clang_64bit-Debug/SHSTCaptureServer.app -dmg -qmldir=/Users/pipiluu/Code/_project/chemi/qt-project/chemi-server

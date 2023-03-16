@@ -1,0 +1,101 @@
+方案菜单的qml定义：
+WzButton {
+            id: buttonCapturePlans
+            anchors.top: parent.top
+            anchors.topMargin: 20
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            anchors.right: buttonCapturePlansMenu.left
+            anchors.rightMargin: 10
+            height: 45
+            text: qsTr("化学发光")
+            radius: 0
+            imageVisible: true
+            imageAlign: Qt.AlignRight | Qt.AlignVCenter
+            imageSourceNormal: "qrc:/images/combox_arrow_down_gray.png"
+            image.anchors.rightMargin: 10
+            label.font.pixelSize: 20
+            label.horizontalAlignment: Text.AlignLeft
+            label.anchors.leftMargin: 30
+            label.anchors.fill: label.parent
+
+            onClicked: {
+                menuCapturePlans.popup(0, buttonCapturePlans.height + 5)
+            }
+
+            WzMenu {
+                id: menuCapturePlans
+                width: parent.width
+                scale: window.scale
+
+                Action {
+                    text: qsTr("RNA")
+                }
+                WzMenuSeparator {
+                    width: parent.width
+                    color: "#525252"
+                }
+                Action {
+                    text: qsTr("DNA")
+                }
+                WzMenuSeparator {
+                    width: parent.width
+                    color: "#525252"
+                }
+                Action {
+                    text: qsTr("Fluorescence")
+                }
+            }
+        }
+
+        WzButton {
+            id: buttonCapturePlansMenu
+            anchors.top: buttonCapturePlans.top
+            anchors.right: parent.right
+            anchors.rightMargin: buttonCapturePlans.anchors.topMargin
+            width: buttonCapturePlans.height
+            height: buttonCapturePlans.height
+            radius: 0
+            text: ""
+            imageVisible: true
+            imageAlign: Qt.AlignCenter
+            imageSourceNormal: "qrc:/images/button_menu.png"
+
+            onClicked: {
+                menuCapturePlansOptions.popup(
+                            buttonCapturePlansMenu,
+                            -menuCapturePlansOptions.width + buttonCapturePlansMenu.width,
+                            buttonCapturePlansMenu.height + 5)
+            }
+        }
+
+        WzMenu {
+            id: menuCapturePlansOptions
+            width: 200
+            Action {
+                text: qsTr("新建方案")
+            }
+            WzMenuSeparator {
+                width: parent.width
+                color: "#525252"
+            }
+            Action {
+                text: qsTr("保存当前方案")
+            }
+            WzMenuSeparator {
+                width: parent.width
+                color: "#525252"
+            }
+            Action {
+                text: qsTr("另存当前方案")
+            }
+            WzMenuSeparator {
+                width: parent.width
+                color: "#525252"
+            }
+            Action {
+                text: qsTr("删除当前方案")
+            }
+        }
+		
+-------------结束------------

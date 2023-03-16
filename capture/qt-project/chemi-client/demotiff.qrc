@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+    <file>demotiff/demo-marker.tif</file>
+    <file>demotiff/demo.tif</file>
+    <file>demotiff/demo-thumb.jpg</file>
+    <file>demotiff/demo-marker2.tif</file>
+    <file>demotiff/demo2.tif</file>
+    <file>demotiff/demo-thumb2.jpg</file>
+    <file>demotiff/demo-marker3.tif</file>
+    <file>demotiff/demo3.tif</file>
+    <file>demotiff/demo-thumb3.jpg</file>
+    </qresource>
+</RCC>

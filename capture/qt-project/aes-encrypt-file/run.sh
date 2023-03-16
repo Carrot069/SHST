@@ -1,0 +1,1 @@
+./build/aes_encrypt_file-Desktop_Qt_5_12_7_clang_64bit-Debug/aes_encrypt_file 0 ./key.bin ./iv.bin ./cam_sn.txt ./ColorHelper
