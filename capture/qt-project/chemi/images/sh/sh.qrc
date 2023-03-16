@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>logo_flower.png</file>
+        <file>logo_text.png</file>
+        <file>logo_flower@2x.png</file>
+        <file>logo_text@2x.png</file>
+        <file>logo_text2@2x.png</file>
+        <file>logo_text2.png</file>
+        <file>logo_text3.png</file>
+        <file>logo_text3@2x.png</file>
+        <file>logo_text4.png</file>
+        <file>logo_text4@2x.png</file>
+    </qresource>
+</RCC>
