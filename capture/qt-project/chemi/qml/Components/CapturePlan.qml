@@ -72,6 +72,7 @@ Item {
             dbService.saveIntOption("capture_plan", currentIndex)
             if (noClearMarker) {
             } else {
+
                 captureService.clearMarkerImage()
             }
         }
@@ -214,8 +215,9 @@ Item {
 
     function switchLight(lightType) {
         noSwitchLight = true        
-        if (lightType === "white_down")
-            comboBoxCapturePlan.currentIndex = 2
+        if (lightType === "white_down"){
+            //comboBoxCapturePlan.currentIndex = 2
+        }
         else if (lightType === "uv_penetrate" || lightType === "uv_penetrate_force" ||
                  lightType === "blue_penetrate")
             comboBoxCapturePlan.currentIndex = 1

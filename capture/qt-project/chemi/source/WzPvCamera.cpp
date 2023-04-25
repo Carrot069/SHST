@@ -105,7 +105,8 @@ void WzPvCamera::run()
 
     if (nullptr == m_cameraCallback) {
         qWarning("nullptr == m_cameraCallback");
-    } else {
+    }
+    else {
         // TODO
         if (initPVCAM()) {
             if (openCamera()) {
@@ -123,7 +124,6 @@ void WzPvCamera::run()
             uninitPVCAM();
         }
     }
-
     while (m_run) {
         if (m_isCameraOpen == FALSE) {
             QThread::msleep(10);
@@ -320,6 +320,7 @@ void WzPvCamera::run()
                 {
                     QMutexLocker lock(&m_mutexImageData);
                     m_pImageData = m_singleFrame;
+                    qDebug()<<"waiteStorage"<<StorageWhite;
                     processImage();
                 }
 
@@ -346,7 +347,6 @@ void WzPvCamera::run()
 
         QThread::msleep(10);
     }
-
     newCameraState(WzCameraState::Disconnecting);
     QThread::msleep(1000);
     newCameraState(WzCameraState::Disconnected);
@@ -494,6 +494,14 @@ void WzPvCamera::processImage() {
     QString path = mkdirImagePath();
     m_latestImageFile = getTiffFileName(path, imageBuffer.captureDateTime);
     WzImageService::saveImageAsTiff(imageBuffer, m_latestImageFile);
+    qDebug()<<"stop:white";
+    QVariant storageWhite;
+    getParam("StorageWhite", storageWhite);
+    if(storageWhite.toBool())
+    {
+        QImage m_latestimage(m_latestImageFile);
+        WzImageService::ImageFlipBlackWhite(m_latestimage,m_latestImageFile);
+    }
 
     imageBuffer.update();
     QVariant isThumbNegative = true;

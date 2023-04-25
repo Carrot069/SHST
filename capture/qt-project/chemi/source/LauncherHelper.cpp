@@ -7,7 +7,7 @@ LauncherHelper::LauncherHelper(QObject *parent) : QObject(parent)
 
 void LauncherHelper::started()
 {
-    QCommandLineParser parser;
+    QCommandLineParser parser;                       //命令行解析
     parser.addOption({"startedEvent", "", "startedEvent"});
     parser.parse(qApp->arguments());
     QString startedEventName = parser.value("startedEvent");

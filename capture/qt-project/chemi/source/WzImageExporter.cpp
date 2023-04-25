@@ -22,6 +22,17 @@ void WzImageExporter::exportImages(const QVariantMap &params)
     }
 }
 
+bool WzImageExporter::getImagesWhite() const
+{
+    return m_ImagesWhite;
+}
+void WzImageExporter::setImagesWhite(bool ImagesWhite)
+{
+    m_ImagesWhite=ImagesWhite;
+    qDebug()<<"批量图"<<m_ImagesWhite;
+    emit ImagesWhiteChanged();
+}
+
 void WzImageExporter::test()
 {
     QJsonObject testData;
@@ -43,6 +54,7 @@ void WzImageExporter::test()
     WzImageExporter exporter;
     exporter.exportImages(testData.toVariantMap());
 }
+
 
 void WzImageExporter::exportImage(const QVariantMap &image)
 {
@@ -67,6 +79,7 @@ void WzImageExporter::exportImage(const QVariantMap &image)
     }
     is.updateLowHigh(grayLow, grayHigh);
     is.updateView();
+    is.setChangedWhite(getImagesWhite());
     if ("jpeg" == exportFormat || "jpg" == exportFormat || "png" == exportFormat) {
         QPainter painter;
         view.setColorTableInvert(true);

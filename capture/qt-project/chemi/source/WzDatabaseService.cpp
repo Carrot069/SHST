@@ -324,7 +324,12 @@ void WzDatabaseService::readIni()
 
 QString WzDatabaseService::getAdvSetFullFile() const
 {
+#ifdef Second_Chemi
+    return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/" + ADV_SET_Send_FILE;
+
+#else
     return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/" + ADV_SET_FILE;
+#endif
 }
 
 bool WzDatabaseService::checkAdvSetIni() const
@@ -433,6 +438,7 @@ QVariantMap WzDatabaseService::readAdminSettingFromDisk() const
     params["chemi"] = chemi;
 
     QVariantMap rna;
+
     rna["light"     ] = settings.value("rna/light").toInt();
     rna["filter"    ] = settings.value("rna/filter").toInt();
     rna["aperture"  ] = settings.value("rna/aperture").toInt();
@@ -479,9 +485,9 @@ QVariantMap WzDatabaseService::readAdminSettingFromDisk() const
     params["isFilterWheel8"           ] = settings.value("common/isFilterWheel8").toBool();
     params["customFilterWheel"        ] = settings.value("common/customFilterWheel").toBool();
     params["bluePenetrateAlone"       ] = settings.value("common/bluePenetrateAlone").toBool();
+
     params["hideUvPenetrate"          ] = settings.value("common/hideUvPenetrate").toBool();
     params["hideUvPenetrateForce"     ] = settings.value("common/hideUvPenetrateForce").toBool();
-
     params["fluorPreviewExposureMs"   ] = settings.value("common/fluorPreviewExposureMs").toInt();
 
     QVariantList filterOptions;
@@ -539,7 +545,7 @@ void WzDatabaseService::saveIntOption(const QString& optionName, const int value
 
 int WzDatabaseService::readIntOption(const QString& optionName, const int defaultValue) {
     QSqlQuery query;
-    query.prepare("select option_int from options where option_name = ?");
+    query.prepare("select option_int from options where option_name = ?"); //查询sql语句
     query.addBindValue(optionName);
     query.exec();
     if (query.next()) {

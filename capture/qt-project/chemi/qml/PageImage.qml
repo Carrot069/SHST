@@ -353,7 +353,7 @@ Item {
 
     WzImageService {
         id: imageService
-        overExposureHint: root.overExposureHint && planName === "chemi"
+        overExposureHint: root.overExposureHint && planName === "chemi"         //过爆提示
         overExposureHintValue: root.overExposureHintValue
         overExposureHintColor: root.overExposureHintColor
         onImageOpened: {
@@ -1000,7 +1000,7 @@ Item {
                 image.anchors.horizontalCenterOffset: -30
                 onClicked: {
                     // batch export
-                    if (thumbnail.listModelSelected.count > 1) {
+                    if (thumbnail.listModelSelected.count > 1) {     //图片数量
                         rectShade.opacity = 0.7
                         selectImageFormat.show()
                         return
@@ -1436,7 +1436,38 @@ Item {
                     }
                 }
             }
+            Text{
+                id:textFlipBlackWhite
+                opacity: imageMergeVisible &&chemiWhiteVisible ? 1 : 0
+                anchors.left: textWhiteImage.visible ? textWhiteImage.right : textWhiteImage.left
+                anchors.leftMargin: textWhiteImage.visible ? 28 : 0
+                color: "#838383"
+                text: qsTr("另存为16位白底图")
+                anchors.bottom: textWhiteImage.bottom
+                font.pixelSize: textChemiImage.font.pixelSize
+                Behavior on opacity {NumberAnimation{duration: 500}}
 
+            }
+            WzSwitch{
+                id:switchFlipBlackWhite
+                opacity: imageMergeVisible &&chemiWhiteVisible ? 1 : 0
+                anchors.horizontalCenter: textFlipBlackWhite.horizontalCenter
+                anchors.horizontalCenterOffset: 1
+                width: 50
+                anchors.bottom: switchWhiteImage.bottom
+                indicator.height: 22
+                textControl.font.pixelSize: 10
+                textControl.anchors.verticalCenterOffset: 1
+                textControl.x: checked ? 7 : 23
+                slideBar.height: 16
+                slideBar.width: 16
+                Behavior on opacity {NumberAnimation{duration: 500}}
+                onCheckedChanged:{
+                    imageService.ChangedWhite=checked;
+                    imageExporter.ImagesWhite=checked;
+                }
+
+            }
             Text {
                 id: textFluorRed
                 visible: opacity > 0
@@ -2309,11 +2340,11 @@ Item {
             console.log(saveImageDialog.currentFile)
             dbService.saveStrOption("save_image_path", saveImageDialog.folder)
             var formats = ["tiff16", "tiff8", "tiff24", "jpeg", "png"]
-            var selectedFormat = formats[selectedNameFilter.index]
-            var imageInfo = thumbnail.getImageInfo(thumbnail.activeIndex)
+            var selectedFormat = formats[selectedNameFilter.index]//所选格式
+            var imageInfo = thumbnail.getImageInfo(thumbnail.activeIndex)//在下方滑轨栏选择图片
             var saveAsParams =  {
-                format: selectedFormat,
-                isSaveMarker: isOverlapShowMode(),
+                format: selectedFormat,           //所选格式
+                isSaveMarker: isOverlapShowMode(),//是否保存marker图
                 fileName: WzUtils.toLocalFile(saveImageDialog.currentFile),
                 isMedFilTiff8: WzUtils.isMedFilTiff8bit() && pageOption.isMedFilTiff8,
                 medFilSize: pageOption.medFilSize
@@ -2322,13 +2353,13 @@ Item {
                 saveAsParams[prop] = imageInfo[prop]
             var ret = imageService.saveAsImage(saveAsParams)
             if (ret) {
-                if (switchChemiImage.checked && switchWhiteImage.checked) {
+                if (switchChemiImage.checked && switchWhiteImage.checked) {//判断2个按键是否触发
                     var autoSaveChemiMarker = dbService.readIntOption("autoSaveChemiMarker", 0)
                     if (autoSaveChemiMarker) {
-                        imageService.saveChemiMarker(saveImageDialog.currentFile, selectedFormat)
+                        imageService.saveChemiMarker(saveImageDialog.currentFile, selectedFormat)//保存化学发光marker图
                     }
                 }
-                msgBox.buttonClicked.connect(imageSaveSuccess)
+                msgBox.buttonClicked.connect(imageSaveSuccess)//判读摁下的是哪个按钮
                 msgBox.show(qsTr("保存成功"), qsTr("确定"), qsTr("打开文件夹"))
             } else {
                 msgBox.show(qsTr("保存失败"), qsTr("确定"))

@@ -111,9 +111,8 @@ public:
         int& imageHeight, const qreal& zoom);
     static bool getMaxAndAvgGray(uint16_t* grayBuffer, int countOfPixel,
                                  uint16_t* grayAvg, uint16_t* maxGray, int64_t* allGray);
-
-
 protected:
+    bool StorageWhite;
     int32_t m_frameCount = 0;           // 需要拍摄的数量
     int32_t m_currentFrame = 0;         // 当前正在拍摄帧索引
     int m_capturedCount = 0;
@@ -136,6 +135,13 @@ signals:
 
 private:
     QMutex* m_paramMutex;
+public slots:
+
+    void SetstorageWhite(const bool value){
+
+        StorageWhite = value;
+        qDebug()<<"Storage1112314"<<StorageWhite;
+    }
 };
 
 class WzCameraThread : public QThread

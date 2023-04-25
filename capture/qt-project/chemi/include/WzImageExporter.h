@@ -44,10 +44,13 @@ public:
      * }
      */
     Q_INVOKABLE void exportImages(const QVariantMap &params);
-
+    Q_PROPERTY(bool ImagesWhite READ getImagesWhite WRITE setImagesWhite NOTIFY ImagesWhiteChanged);
+    bool getImagesWhite()const;
     static void test();
 
 private:
+    bool m_ImagesWhite=false;
+    void setImagesWhite(bool ImagesWhite);
     void exportImage(const QVariantMap &image);
     bool checkExportPath(const QString &path);
     bool checkExportFormat(const QString &format);
@@ -55,6 +58,7 @@ private:
 
 signals:
     void progress(const int &currentIndex, const int &total);
+    void ImagesWhiteChanged();
 };
 
 #endif // WZIMAGEEXPORTER_H

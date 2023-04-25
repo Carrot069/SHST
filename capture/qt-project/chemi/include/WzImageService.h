@@ -19,6 +19,11 @@
 #include <QPainterPath>
 #include <QProcess>
 #include <QRegularExpression>
+#include <QtWidgets>
+#include <QtGui>
+#include <QtCore>
+#include <QImage>
+#include <QColor>
 
 #include "tiff.h"
 #include "tiffio.h"
@@ -76,11 +81,13 @@ private:
     bool m_invert = true;
     bool m_showMarker = false;
     bool m_showChemi = true;
+    bool m_changedWhite=false;
     uint8_t m_colorTableR[256];
     uint8_t m_colorTableG[256];
     uint8_t m_colorTableB[256];
     QString m_markerImageName;
     QImage* m_markerImage = nullptr;
+    QImage* m_whiteImage = nullptr;
     WzImageBuffer* m_markerBuffer = nullptr; // 16bit tiff marker
     uint8_t* m_markerBuffer8bit = nullptr; // 8bit marker from 16bit tiff
     QVariantList m_pseudoList;
@@ -104,7 +111,6 @@ private:
     void setHigh(int high);
     void setLowMarker(int lowMarker);
     void setHighMarker(int highMarker);
-
     void updateViewRGB();
     bool getIsColorChannel() const;
     void setIsColorChannel(bool isColorChannel);
@@ -132,14 +138,16 @@ private:
     void setIsPseudoColorBarInImage(bool isPseudoColorBarInImage);
 
 public:
-
     int getLow() const;
     int getHigh() const;
     int getLowMarker() const;
     int getHighMarker() const;
-
+    bool getChangedWhite()const;
+    void setChangedWhite(bool changedWhite);
     static WzEnum::ErrorCode loadImage(const QString& filename, WzImageBuffer* imageBuffer);
     static bool saveImageAsTiff(const WzImageBuffer& imageBuffer, const QString& filename);
+    //对TIFF图片进行黑白翻转
+    static bool ImageFlipBlackWhite(QImage& image,QString& path);
     // 根据原始图片的完整文件名生成缩略图文件名, 若路径中的文件夹未创建则自动创建
     static QString getThumbFileName(const QString& imageFileName);
 
@@ -207,6 +215,7 @@ public:
     Q_PROPERTY(bool showChemi MEMBER m_showChemi)
     Q_PROPERTY(QJsonArray pseudoList READ getPseudoList NOTIFY pseudoListChanged)
     Q_PROPERTY(int low READ getLow WRITE setLow NOTIFY lowChanged)
+    Q_PROPERTY(bool ChangedWhite READ getChangedWhite WRITE setChangedWhite NOTIFY ChangedWhiteChanged)
     Q_PROPERTY(int high READ getHigh WRITE setHigh NOTIFY highChanged)
     Q_PROPERTY(int lowMarker READ getLowMarker WRITE setLowMarker NOTIFY lowMarkerChanged)
     Q_PROPERTY(int highMarker READ getHighMarker WRITE setHighMarker NOTIFY highMarkerChanged)
@@ -241,6 +250,7 @@ signals:
     void overExposureHintChanged();
     void overExposureHintValueChanged();
     void overExposureHintColorChanged();
+    void ChangedWhiteChanged();
 
 public slots:
 private slots:

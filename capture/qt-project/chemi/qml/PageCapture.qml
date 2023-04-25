@@ -40,6 +40,10 @@ Item {
         if (!switchPreview.checked)
             switchPreview.checked = true
     }
+    function getStorageWhite(m_checked)
+    {
+        captureService.storageWhite=m_checked;
+    }
 
     WzMcu {
         id: mcu
@@ -136,6 +140,16 @@ Item {
                 interval = 1000
                 tick++
             }
+        }
+    }
+    Timer {
+        id: switchBinningTimer
+        repeat: false
+        running: false
+        interval: 5000
+        onTriggered: {
+                capturePlan.comboBoxCapturePlan.enabled=true
+                switchPreview.checked=true
         }
     }
     Timer {
@@ -1230,6 +1244,13 @@ Item {
                 text = binning + "x" + binning
                 capturePlan.setBinning(binning)
                 pageOption.binning = binning
+                if(!isMini)
+                {
+                   switchPreview.checked=false
+                   capturePlan.comboBoxCapturePlan.enabled=false
+                   switchBinningTimer.running=true
+                }
+
             }
 
             onClicked: {
@@ -1390,6 +1411,7 @@ Item {
 
             MouseArea {
                 anchors.fill: parent
+                visible: captureService.isSecondChemi
                 onClicked: lensPopupMenu.open(mouse.x, mouse.y)
             }
         }
@@ -1397,7 +1419,8 @@ Item {
         // 自动聚焦按钮
         WzButton {
             id: buttonFocusAuto
-            enabled: mcuConnected && cameraConnected
+            enabled: mcuConnected && cameraConnected       
+            visible: captureService.isSecondChemi
             opacity: enabled ? 1 : 0.4
             width: 20
             height: 20

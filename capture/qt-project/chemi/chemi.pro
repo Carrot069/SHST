@@ -17,8 +17,9 @@ DEFINES += EXPOSURE_AREA
 #DEFINES += ONLY_CHINESE
 #DEFINES += OEM
 #DEFINES += OEM_JP
-#DEFINES += MINI
+DEFINES += MINI
 #DEFINES += NO_LOGO
+#DEFINES +=Second_Chemi
 
 # You can also make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.

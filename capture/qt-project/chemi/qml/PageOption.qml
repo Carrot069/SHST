@@ -6,6 +6,7 @@ import QtQuick.Window 2.12
 import WzUtils 1.0
 import WzEnum 1.0
 import WzI18N 1.0
+import WzCapture 1.0
 
 import "WzControls"
 import "WzControls.2"
@@ -198,14 +199,26 @@ Rectangle {
                     dbService.saveStrOption("languageName", languages[currentIndex])
                 }
             }
+            WzCheckBox{
+                id:autoSaveWhiteBackground
+                text:qsTr("自动保存附加16位白底原图")
+                anchors.left: textLanguage.left
+                anchors.leftMargin: -7
+                anchors.top: comboBoxLanguage.visible ? comboBoxLanguage.bottom : textFieldImagePath.bottom
+                anchors.topMargin: 20
+                onCheckedChanged:{
+                    dbService.saveIntOption("autoSaveWhiteBackground", checked ? 1 : 0)
+                    pageCapture.getStorageWhite(checked)
+                }
 
+            }
             WzCheckBox {
                 id: autoSaveChemiMarkerCheckBox
                 text: qsTr("另存叠加图时同时保存化学发光图和Marker图")
                 anchors.left: textLanguage.left
                 anchors.leftMargin: -7
-                anchors.top: comboBoxLanguage.visible ? comboBoxLanguage.bottom : textFieldImagePath.bottom
-                anchors.topMargin: 20
+                anchors.top: autoSaveWhiteBackground.bottom
+                anchors.topMargin: -10
                 onCheckedChanged: {
                     dbService.saveIntOption("autoSaveChemiMarker", checked ? 1 : 0)
                 }
@@ -561,6 +574,7 @@ Rectangle {
                 comboBoxLanguage.currentIndex = i
                 break
             }
+        autoSaveWhiteBackground.checked = 1 ===dbService.readIntOption("autoSaveWhiteBackground", 0)
         autoSaveChemiMarkerCheckBox.checked = 1 === dbService.readIntOption("autoSaveChemiMarker", 0)
         grayHighAutoMiddleCheckBox.checked = 1 === dbService.readIntOption("grayHighAutoMiddle", 0)
         updateLowHighWhenValueChangedCheckBox.checked = 1 === dbService.readIntOption("updateLowHighWhenValueChanged", 1)
@@ -577,6 +591,7 @@ Rectangle {
         checkMarkerDarkCheckBox.checked = ("1" === dbService.readStrOption("isCheckMarkerDark", "0"))
         checkMarkerDarkThresholdSpinBox.value = parseInt(dbService.readStrOption("checkMarkerDarkThreshold", "100"))
 
+        pageCapture.getStorageWhite(autoSaveWhiteBackground.checked)
         pageImage.grayHighAutoMiddle = grayHighAutoMiddleCheckBox.checked
         pageImage.updateLowHighWhenValueChanged = updateLowHighWhenValueChangedCheckBox.checked
         pageImage.rememberLowHigh = rememberLowHighCheckBox.checked

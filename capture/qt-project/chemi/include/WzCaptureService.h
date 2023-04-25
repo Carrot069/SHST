@@ -66,6 +66,7 @@ public:
     Q_INVOKABLE void stopAutoFocus();
     Q_INVOKABLE QString getPreviewImageDiff(const int diffType = 0);
 
+    Q_PROPERTY(int isSecondChemi MEMBER m_isSecondChemi)              // 当前 是否是二代机
     Q_PROPERTY(int previewExposureMs MEMBER m_previewExposureMs WRITE setPreviewExposureMs) // 预览的曝光时间
     Q_PROPERTY(int exposurePercent MEMBER m_exposurePercent)              // 当前曝光时间百分比
     Q_PROPERTY(int captureCount MEMBER m_captureCount)                    // 拍摄次数
@@ -80,8 +81,9 @@ public:
     Q_PROPERTY(QString imagePath READ imagePath WRITE setImagePath NOTIFY imagePathChanged)
     Q_PROPERTY(bool isAutoExposure READ getAutoExposure WRITE setAutoExposure NOTIFY autoExposureChanged)
     Q_PROPERTY(int autoExposureMs READ getAutoExposureMs CONSTANT)
-
+    Q_PROPERTY(bool storageWhite READ getStorageWhite WRITE setStorageWhite NOTIFY StorageWhiteChanged);
     bool cameraSN(const QString sn);
+    bool getStorageWhite();
 
 signals:
     void cameraStateChanged(const WzCameraState::CameraState& state);
@@ -95,7 +97,8 @@ signals:
 
     void imagePathChanged();
     void autoExposureChanged();
-
+    void StorageWhiteChanged();
+    void SendStorageWhite(const bool white);
 private slots:
     void previewImageUpdated();
     void captureTimer();
@@ -121,7 +124,6 @@ private:
     QMutex m_markerTiff16bitLock;
     QSize m_markerImageSize;
     //bool m_autoGotMarker = false;
-
     int m_previewExposureMs;             // 预览的曝光时间
     int m_exposurePercent;               // 当前曝光时间百分比
     int m_captureCount;                  // 拍摄次数
@@ -135,6 +137,8 @@ private:
     bool m_cameraConnected = false;
     QString m_imagePath = "";
     bool m_isAutoExposure = false;
+    bool m_StorageWhite=false;
+    bool m_isSecondChemi=false;          //是否是二代机
 
     WzCameraState::CameraState m_cameraState;
 
@@ -149,6 +153,7 @@ private:
     bool getAutoExposure();
     void setAutoExposure(bool autoExposure);
     int getAutoExposureMs();
+    void setStorageWhite(bool StorageWhite);
 };
 
 #endif // WZCAPTURE_SERVICE_H

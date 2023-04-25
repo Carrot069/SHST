@@ -109,8 +109,70 @@ WzEnum::ErrorCode WzImageService::loadImage(const QString& imageFileName, WzImag
     return WzEnum::Success;
 }
 
+bool WzImageService::ImageFlipBlackWhite(QImage& image,QString& path){
+    QByteArray filenameByteArray = path.toLocal8Bit();
+    char* fn = filenameByteArray.data();
+    QString path_white=path.left(path.size()-4)+"_white.tif";
+    QByteArray filenameByteArray_white = path_white.toLocal8Bit();
+    char* fn_white = filenameByteArray_white.data();
+
+    TIFF* tif_in = TIFFOpen(fn, "r");
+        if (!tif_in) {
+            return 1;
+        }
+
+        // Read the input TIFF image dimensions
+        uint32_t width, height;
+        float xres = 96.,yres = 96.;
+        TIFFGetField(tif_in, TIFFTAG_IMAGEWIDTH, &width);
+        TIFFGetField(tif_in, TIFFTAG_IMAGELENGTH, &height);
+        TIFFGetField(tif_in, TIFFTAG_XRESOLUTION, &xres);
+        TIFFGetField(tif_in, TIFFTAG_YRESOLUTION, &yres);
+
+        // Open the output TIFF file
+        TIFF* tif_out = TIFFOpen(fn_white, "w");
+        if (!tif_out) {
+            TIFFClose(tif_in);
+            return 1;
+        }
+
+        // Set the output TIFF image dimensions and properties
+        TIFFSetField(tif_out, TIFFTAG_IMAGEWIDTH, width);
+        TIFFSetField(tif_out, TIFFTAG_IMAGELENGTH, height);
+        TIFFSetField(tif_out, TIFFTAG_SAMPLESPERPIXEL, 1);
+        TIFFSetField(tif_out, TIFFTAG_BITSPERSAMPLE, 16);
+        TIFFSetField(tif_out, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_MINISWHITE);
+
+        TIFFSetField(tif_out, TIFFTAG_XRESOLUTION, xres);
+        TIFFSetField(tif_out, TIFFTAG_YRESOLUTION, yres);
+        TIFFSetField(tif_out, TIFFTAG_RESOLUTIONUNIT, RESUNIT_INCH);
+
+        // Allocate memory for a scanline of input and output image
+        uint16_t* scanline_in = (uint16_t*)_TIFFmalloc(TIFFScanlineSize(tif_in));
+        uint16_t* scanline_out = (uint16_t*)_TIFFmalloc(TIFFScanlineSize(tif_out));
+
+        // Process and write each scanline of input image
+        for (uint32_t row = 0; row < height; row++) {
+            TIFFReadScanline(tif_in, scanline_in, row);
+            // Write the processed scanline to the output TIFF file
+            TIFFWriteScanline(tif_out, scanline_in, row);
+        }
+
+        // Free the memory for the scanlines
+        _TIFFfree(scanline_in);
+        _TIFFfree(scanline_out);
+
+        // Close the input and output TIFF files
+        TIFFClose(tif_in);
+        TIFFClose(tif_out);
+
+        return true;
+
+
+}
+
 bool WzImageService::saveImageAsTiff(const WzImageBuffer& imageBuffer, const QString& filename) {
-#ifdef Q_OS_WIN
+#ifdef Q_OS_WIN                          //定义在Windows中
     wchar_t fn[65535] = {0};
     filename.toWCharArray(fn);
 
@@ -127,20 +189,20 @@ bool WzImageService::saveImageAsTiff(const WzImageBuffer& imageBuffer, const QSt
         WzTiffCloser closer(tif);
 
         TIFFSetField(tif, TIFFTAG_SUBFILETYPE, 0);
-        TIFFSetField(tif, TIFFTAG_IMAGEWIDTH, imageBuffer.width);
-        TIFFSetField(tif, TIFFTAG_IMAGELENGTH, imageBuffer.height);
-        TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, imageBuffer.bitDepth);
-        TIFFSetField(tif, TIFFTAG_COMPRESSION, COMPRESSION_NONE);
-        TIFFSetField(tif, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_MINISBLACK);
+        TIFFSetField(tif, TIFFTAG_IMAGEWIDTH, imageBuffer.width);                        //图像宽
+        TIFFSetField(tif, TIFFTAG_IMAGELENGTH, imageBuffer.height);                      //图像高
+        TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, imageBuffer.bitDepth);                  //图像通道数
+        TIFFSetField(tif, TIFFTAG_COMPRESSION, COMPRESSION_NONE);                        //数据压缩技术
+        TIFFSetField(tif, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_MINISBLACK);                  //光度稀释
         TIFFSetField(tif, TIFFTAG_IMAGEDESCRIPTION, ""); // TODO 写点东西
-        TIFFSetField(tif, TIFFTAG_MAKE, kTiffMake);
+        TIFFSetField(tif, TIFFTAG_MAKE, kTiffMake);                                      //扫描仪厂家名称
         TIFFSetField(tif, TIFFTAG_MODEL, ""); // TODO 写点东西， 本程序拍摄的图片写入这个字段
-        TIFFSetField(tif, TIFFTAG_SAMPLESPERPIXEL, imageBuffer.samplesPerPixel);
-        TIFFSetField(tif, TIFFTAG_ROWSPERSTRIP, 1);
-        TIFFSetField(tif, TIFFTAG_XRESOLUTION, 600.0);
+        TIFFSetField(tif, TIFFTAG_SAMPLESPERPIXEL, imageBuffer.samplesPerPixel);         //像素
+        TIFFSetField(tif, TIFFTAG_ROWSPERSTRIP, 1);                                      //每条数据的行数
+        TIFFSetField(tif, TIFFTAG_XRESOLUTION, 600.0);                                   //像素/ x分辨率
         TIFFSetField(tif, TIFFTAG_YRESOLUTION, 600.0);
         TIFFSetField(tif, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG);
-        TIFFSetField(tif, TIFFTAG_RESOLUTIONUNIT, RESUNIT_INCH);
+        TIFFSetField(tif, TIFFTAG_RESOLUTIONUNIT, RESUNIT_INCH);                         //分辨率单位
         TIFFSetField(tif, TIFFTAG_SOFTWARE, kTiffSoftware);
         TIFFSetField(tif, TIFFTAG_ARTIST, kTiffArtist);
         TIFFSetField(tif, TIFFTAG_SAMPLEFORMAT, SAMPLEFORMAT_UINT);
@@ -401,9 +463,19 @@ bool WzImageService::saveAsImage(const QJsonObject &params) {
     bool isSaveMarker = params["isSaveMarker"].toBool();
     QString fileName = params["fileName"].toString();
     if (format == "tiff16") {
-        if (isSaveMarker && QFile::exists(m_markerImageName))
+        if (isSaveMarker && QFile::exists(m_markerImageName))//文件是否存在和是不是marker图
             copyTiff16Image(fileName, "_marker", m_markerImageName);
-        return saveImageAsTiff(*m_imageBuffer, fileName);
+        if(saveImageAsTiff(*m_imageBuffer, fileName)){
+            if(m_changedWhite){
+                QImage m_image(fileName);
+                return ImageFlipBlackWhite(m_image,fileName);
+            }
+            else
+            {
+                return true;
+            }
+        }
+        return false;
     }
     if (format == "tiff8") {
         if (nullptr == m_image8bit)
@@ -1270,6 +1342,17 @@ void WzImageService::setHighMarker(int highMarker)
 {
     m_highMarker = highMarker;
     emit highMarkerChanged();
+}
+
+void WzImageService::setChangedWhite(bool changedWhite)
+{
+    m_changedWhite=changedWhite;
+    emit ChangedWhiteChanged();
+}
+
+bool WzImageService::getChangedWhite() const
+{
+    return m_changedWhite;
 }
 
 void WzImageService::updateViewRGB()

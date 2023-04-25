@@ -35,6 +35,11 @@ WzCaptureService::WzCaptureService(QObject *parent):
     m_captureTimer->setInterval(900);
 
     m_camera->setCameraCallback(this);
+#ifdef Second_Chemi
+    m_isSecondChemi=false;
+#else
+    m_isSecondChemi=true;
+#endif
 
     connect(&m_autoFocus, &WzAutoFocus::focusFar, this, &WzCaptureService::autoFocusFar);
     connect(&m_autoFocus, &WzAutoFocus::focusNear, this, &WzCaptureService::autoFocusNear);
@@ -42,6 +47,7 @@ WzCaptureService::WzCaptureService(QObject *parent):
     connect(&m_autoFocus, &WzAutoFocus::getImage, this, &WzCaptureService::autoFocusGetImage);
     connect(&m_autoFocus, &WzAutoFocus::log, this, &WzCaptureService::autoFocusLog);
     connect(&m_autoFocus, &WzAutoFocus::finished, this, &WzCaptureService::autoFocusFinished);
+    connect(this, &WzCaptureService::SendStorageWhite, m_camera, &WzAbstractCamera::SetstorageWhite);
 }
 
 WzCaptureService::~WzCaptureService()
@@ -702,4 +708,19 @@ int WzCaptureService::getAutoExposureMs() {
         return m_camera->getExposureMs();
     else
         return 0;
+}
+
+bool WzCaptureService::getStorageWhite()
+{
+    return m_StorageWhite;
+}
+
+void WzCaptureService::setStorageWhite(bool StorageWhite)
+{
+    m_StorageWhite=StorageWhite;
+    if (m_camera != nullptr) {
+        m_camera->setParam("StorageWhite", StorageWhite);
+    }
+    emit StorageWhiteChanged();
+    emit SendStorageWhite(StorageWhite);
 }

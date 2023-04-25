@@ -74,7 +74,6 @@ public:
     int getMarkerImage(uint16_t **buffer) override;
 
     void newFrame();
-
 protected:
     void processImage() override;
 
