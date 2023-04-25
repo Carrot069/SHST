@@ -76,6 +76,7 @@ private:
 
 private:
     const QString ADV_SET_FILE = "AdvSet.ini";
+    const QString ADV_SET_Send_FILE = "AdvSetSend.ini";
     QString getAdvSetFullFile() const;
     bool checkAdvSetIni() const;
     bool deleteAdvSetIni() const;

@@ -84,6 +84,7 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
+   ////********************************查找sql确认屏幕***************************************////////
         var ww = dbService.readIntOption("windowWidth", -1)
         var wh = dbService.readIntOption("windowHeight", -1)
         var wx = dbService.readIntOption("windowLeft", -1)
@@ -106,7 +107,7 @@ ApplicationWindow {
             window.showMaximized()
 
         visible = true
-
+//************************************判断加密锁状态*********************************//
         if (WzRender.getCount() === 0) {
             hardlockNotFound()
             launcherHelper.started()
@@ -114,16 +115,14 @@ ApplicationWindow {
         } else {
             renderThread.startThread()
         }
-
+//************************************存放地址图片**********************************//
         var imagePath = dbService.readStrOption("image_path", "")
         if (undefined === imagePath || "" === imagePath || !WzUtils.validatePath(imagePath)) {
             rectangleShade.opacity = 0.7
             imagePathSelect.show()
         }
-
         launcherHelper.started()
     }
-
     WzDatabaseService {
         id: dbService
     }
@@ -245,7 +244,7 @@ ApplicationWindow {
             z: 10000
             anchors.centerIn: parent
         }
-
+//**************图片地址选择***********************//
         ImagePathSelect {
             id: imagePathSelect
             z: rectangleShade.z + 1
@@ -316,7 +315,7 @@ ApplicationWindow {
         id: settingController
         onResponse: loaderDebugCommandResponse.item.append(response)
     }
-
+//**************************平行动画**************************//
     ParallelAnimation {
         id: pageChangeAnimation
         running: false
@@ -356,7 +355,7 @@ ApplicationWindow {
             easing.type: Easing.InOutQuad
         }
     }
-
+//**************************没有找到加密锁关闭**************************//
     function hardlockNotFound() {
         pageCapture.visible = false
         pageImage.visible = false
@@ -386,4 +385,5 @@ ApplicationWindow {
             debugCommand(cmd)
         }
     }
+
 }

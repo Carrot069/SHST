@@ -78,7 +78,7 @@ void WzUtils::copyToClipboard(const QString& text) {
 
 bool WzUtils::validatePath(const QString& path) {
     QDir p(path);
-    return p.mkpath(".");
+    return p.mkpath(".");//判断上一级目录
 }
 
 QString WzUtils::toLocalPath(const QString &path) {

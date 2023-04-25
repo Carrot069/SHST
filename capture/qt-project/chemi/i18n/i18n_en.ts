@@ -669,16 +669,20 @@
         <source>USB通信响应超时，可尝试拔插USB数据线</source>
         <translation>USB timeout, please reconnect the USB cable</translation>
     </message>
+    <message>
+        <source>无法读取高级设置</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PageCaptureController</name>
     <message>
         <source>获取Marker图时出现错误, 请重试</source>
-        <translation>Error getting marker, please try again</translation>
+        <translation type="vanished">Error getting marker, please try again</translation>
     </message>
     <message>
         <source>保存Marker图时出现错误, 请重试</source>
-        <translation>An error occurred while saving Marker. Please try again</translation>
+        <translation type="vanished">An error occurred while saving Marker. Please try again</translation>
     </message>
     <message>
         <source>确定</source>
@@ -726,6 +730,10 @@
     <message>
         <source>白光图</source>
         <translation>Marker</translation>
+    </message>
+    <message>
+        <source>另存为16位白底图</source>
+        <translation>Save as 16bit white background TIF</translation>
     </message>
     <message>
         <source>红色通道</source>
@@ -797,11 +805,11 @@
     </message>
     <message>
         <source>16位TIFF(*.tif)</source>
-        <translation>16bit TIFF</translation>
+        <translation>16bit TIFF(*.tif)</translation>
     </message>
     <message>
         <source>8位 TIFF(*.tif)</source>
-        <translation>8bit TIFF</translation>
+        <translation>8bit TIFF(*.tif)</translation>
     </message>
     <message>
         <source>曝光时间:</source>
@@ -821,7 +829,7 @@
     </message>
     <message>
         <source>24位 TIFF(*.tif)</source>
-        <translation>24bit TIFF</translation>
+        <translation>24bit TIFF(*.tif)</translation>
     </message>
     <message>
         <source>使用了伪彩时无法保存为8位的图片</source>
@@ -869,6 +877,10 @@
     <message>
         <source>界面语言:</source>
         <translation>Language:</translation>
+    </message>
+    <message>
+        <source>自动保存附加16位白底原图</source>
+        <translation>Auto save as 16bit white background TIF</translation>
     </message>
     <message>
         <source>另存叠加图时同时保存化学发光图和Marker图</source>

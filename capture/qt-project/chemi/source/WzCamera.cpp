@@ -386,7 +386,6 @@ bool WzAbstractCamera::getMaxAndAvgGray(uint16_t *grayBuffer, int countOfPixel, 
 void WzAbstractCamera::setCameraCallback(WzCameraCallback* callback) {
     this->m_cameraCallback = callback;
 }
-
 int WzTestCamera::setPreviewEnabled(bool enabled)
 {
     if (enabled) {
